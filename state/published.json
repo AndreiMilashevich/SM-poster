@@ -19,5 +19,9 @@
     "telegram": "203",
     "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myac4x64hj26",
     "threads": "18129213457855091"
+  },
+  "mig-29.md": {
+    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myawyoa2kr27",
+    "telegram": "204"
   }
 }
