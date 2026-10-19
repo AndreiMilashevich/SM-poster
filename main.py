@@ -79,6 +79,9 @@ def main() -> int:
                 failed = True
                 continue
 
+            if post.get("image") and not getattr(publisher, "SUPPORTS_IMAGES", False):
+                print(f"{path.name}: {network} пока не поддерживает картинки, публикую без неё")
+
             try:
                 done[network] = publisher.publish(text, post.metadata)
                 print(f"{path.name}: опубликовано в {network}")
