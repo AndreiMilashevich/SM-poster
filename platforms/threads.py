@@ -1,4 +1,4 @@
-import requests
+import requests, time
 
 from config import env
 
@@ -24,6 +24,7 @@ def publish(text: str, meta: dict) -> str:
         f"{API}/{user_id}/threads",
         {"media_type": "TEXT", "text": text, "access_token": token},
     )
+    time.sleep(10)
     # Step 2: publish the container
     published = _post(
         f"{API}/{user_id}/threads_publish",
