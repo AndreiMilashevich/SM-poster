@@ -1,6 +1,6 @@
 ---
 publish_at: 2026-10-20T10:00:00+02:00
-networks: [telegram]
+networks: [telegram, bluesky, threads]
 lang: be
 media:
  - assets/images/HREySXsWcAAmNr3.jfif

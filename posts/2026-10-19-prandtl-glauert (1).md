@@ -1,5 +1,5 @@
 ---
-networks: [telegram]
+networks: [telegram, bluesky, threads]
 lang: be
 image: assets/images/FA-18_Hornet_breaking_sound_barrier_(7_July_1999).jpg
 ---
