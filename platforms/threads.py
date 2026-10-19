@@ -19,12 +19,12 @@ def publish(text: str, meta: dict) -> str:
     user_id = env("THREADS_USER_ID")
     token = env("THREADS_ACCESS_TOKEN")
 
-    # Шаг 1: создаём контейнер с текстом
+    # Step 1: create a container with the text
     container = _post(
         f"{API}/{user_id}/threads",
         {"media_type": "TEXT", "text": text, "access_token": token},
     )
-    # Шаг 2: публикуем контейнер
+    # Step 2: publish the container
     published = _post(
         f"{API}/{user_id}/threads_publish",
         {"creation_id": container["id"], "access_token": token},
