@@ -16,7 +16,7 @@ def _post(url: str, params: dict) -> dict:
 
 
 def publish(text: str, meta: dict) -> str:
-    user_id = env("THREADS_USER_ID")
+    user_id = "me"
     token = env("THREADS_ACCESS_TOKEN")
 
     # Step 1: create a container with the text
