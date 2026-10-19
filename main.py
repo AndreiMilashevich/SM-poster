@@ -1,6 +1,6 @@
-"""Публикует готовые посты из posts/*.md в соцсети.
+"""Publish ready posts from posts/*.md to social networks.
 
-Запуск: python main.py
+Run: python main.py
 """
 import json
 import sys
@@ -9,6 +9,7 @@ from pathlib import Path
 
 import frontmatter
 
+from config import get_media
 from platforms import PUBLISHERS
 
 POSTS_DIR = Path("posts")
@@ -30,14 +31,14 @@ def save_state(state: dict) -> None:
 
 
 def parse_time(value) -> datetime:
-    """Приводит publish_at к datetime с часовым поясом. Нет значения = публиковать сразу."""
+    """Convert publish_at to a timezone-aware datetime. No value means publish immediately."""
     if value is None:
         return datetime.min.replace(tzinfo=timezone.utc)
     if isinstance(value, str):
         value = datetime.fromisoformat(value)
     elif isinstance(value, date) and not isinstance(value, datetime):
         value = datetime.combine(value, time.min)
-    if value.tzinfo is None:  # без пояса считаем время UTC
+    if value.tzinfo is None:  # treat a naive time as UTC
         value = value.replace(tzinfo=timezone.utc)
     return value
 
@@ -54,7 +55,7 @@ def main() -> int:
         if post.get("draft"):
             continue
         if parse_time(post.get("publish_at")) > datetime.now(timezone.utc):
-            continue  # ещё не время
+            continue  # not due yet
 
         text = post.content.strip()
         if not text:
@@ -63,7 +64,7 @@ def main() -> int:
         done = state.setdefault(path.name, {})
         for network in post.get("networks", DEFAULT_NETWORKS):
             if network in done:
-                continue  # уже опубликовано, второй раз не постим
+                continue  # already published, never post twice
 
             publisher = PUBLISHERS.get(network)
             if publisher is None:
@@ -79,8 +80,8 @@ def main() -> int:
                 failed = True
                 continue
 
-            if post.get("image") and not getattr(publisher, "SUPPORTS_IMAGES", False):
-                print(f"{path.name}: {network} пока не поддерживает картинки, публикую без неё")
+            if get_media(post.metadata) and not getattr(publisher, "SUPPORTS_MEDIA", False):
+                print(f"{path.name}: {network} пока не поддерживает фото и видео, публикую без них")
 
             try:
                 done[network] = publisher.publish(text, post.metadata)
@@ -88,7 +89,7 @@ def main() -> int:
             except Exception as error:
                 print(f"{path.name}: ошибка в {network}: {error}", file=sys.stderr)
                 failed = True
-            save_state(state)  # сохраняем прогресс после каждой сети
+            save_state(state)  # save progress after each network
 
     save_state(state)
     return 1 if failed else 0
