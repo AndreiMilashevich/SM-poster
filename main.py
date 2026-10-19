@@ -80,10 +80,9 @@ def main() -> int:
                 failed = True
                 continue
 
-            if get_media(post.metadata) and not getattr(publisher, "SUPPORTS_MEDIA", False):
-                print(f"{path.name}: {network} пока не поддерживает фото и видео, публикую без них")
-
             try:
+                if get_media(post.metadata) and not getattr(publisher, "SUPPORTS_MEDIA", False):
+                    print(f"{path.name}: {network} пока не поддерживает фото и видео, публикую без них")
                 done[network] = publisher.publish(text, post.metadata)
                 print(f"{path.name}: опубликовано в {network}")
             except Exception as error:

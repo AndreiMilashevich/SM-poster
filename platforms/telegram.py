@@ -4,14 +4,14 @@ from pathlib import Path
 
 import requests
 
-from config import env, get_media
+from config import IMAGE_EXT, VIDEO_EXT, env, get_media
 
 LIMIT = 4096          # message text limit
 CAPTION_LIMIT = 1024  # caption limit when the post has photos or videos
 SUPPORTS_MEDIA = True
 
-PHOTO_EXT = {".jpg", ".jpeg", ".png", ".webp", ".jfif"}
-VIDEO_EXT = {".mp4", ".mov", ".m4v"}
+# PHOTO_EXT = {".jpg", ".jpeg", ".png", ".webp", ".jfif"}
+# VIDEO_EXT = {".mp4", ".mov", ".m4v"}
 MAX_PHOTO = 10 * 1024 * 1024  # Telegram photo size limit
 MAX_FILE = 50 * 1024 * 1024   # file upload limit via the Bot API
 MAX_ALBUM = 10                # maximum files in one album
@@ -20,17 +20,17 @@ MAX_ALBUM = 10                # maximum files in one album
 def _kind(path: str) -> str:
     """Detect the file type and check its size. Fail with a clear error."""
     extension = Path(path).suffix.lower()
-    if extension in PHOTO_EXT:
+    if extension in IMAGE_EXT:
         kind, limit = "photo", MAX_PHOTO
     elif extension in VIDEO_EXT:
         kind, limit = "video", MAX_FILE
     else:
-        raise RuntimeError(f"Telegram: неподдерживаемый формат файла {path}")
+        raise RuntimeError(f"Telegram: unsupported file format {path}")
     size = Path(path).stat().st_size  # a missing file raises FileNotFoundError
     if size > limit:
         raise RuntimeError(
-            f"Telegram: файл {path} слишком большой ({size / 1048576:.1f} МБ, "
-            f"максимум {limit // 1048576} МБ)"
+            f"Telegram: file {path} is too large ({size / 1048576:.1f} MB, "
+            f"max {limit // 1048576} MB)"
         )
     return kind
 
