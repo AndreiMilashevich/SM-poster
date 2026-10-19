@@ -1,11 +1,16 @@
 {
   "test.md": {
-    "telegram": "198"
+    "telegram": "198",
+    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mya5deilcj22"
   },
   "2026-10-19-prandtl-glauert (1).md": {
     "telegram": "199"
   },
   "auxilary_intakes.md": {
     "telegram": "200"
+  },
+  "test2.md": {
+    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mya5deym5z26",
+    "telegram": "202"
   }
 }
