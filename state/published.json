@@ -12,5 +12,9 @@
   "test2.md": {
     "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mya5deym5z26",
     "telegram": "202"
+  },
+  "b-25.md": {
+    "telegram": "203",
+    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myac4x64hj26"
   }
 }
