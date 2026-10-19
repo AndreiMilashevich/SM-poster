@@ -1,7 +1,8 @@
 {
   "test.md": {
     "telegram": "198",
-    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mya5deilcj22"
+    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mya5deilcj22",
+    "threads": "18227950147336552"
   },
   "2026-10-19-prandtl-glauert (1).md": {
     "telegram": "199"
@@ -11,10 +12,12 @@
   },
   "test2.md": {
     "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mya5deym5z26",
-    "telegram": "202"
+    "telegram": "202",
+    "threads": "18110085911234113"
   },
   "b-25.md": {
     "telegram": "203",
-    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myac4x64hj26"
+    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myac4x64hj26",
+    "threads": "18129213457855091"
   }
 }
