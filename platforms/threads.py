@@ -17,7 +17,8 @@ def _request(method: str, url: str, params: dict) -> dict:
     data = response.json()
     if not response.ok or "error" in data:
         message = data.get("error", {}).get("message", response.status_code)
-        raise RuntimeError(f"Threads: {message}")
+        step = url.rsplit("/", 1)[-1]  # threads, threads_publish or a container id
+        raise RuntimeError(f"Threads ({step}): {message}")
     return data
 
 
@@ -106,6 +107,8 @@ def publish(text: str, meta: dict) -> str:
 
     if images:
         _wait_until_ready(container["id"], token)
+    else:
+        time.sleep(10)
     published = _post(
         f"{API}/{user_id}/threads_publish",
         {"creation_id": container["id"], "access_token": token},
