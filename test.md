@@ -1,0 +1,4 @@
+   ---
+   networks: [telegram]
+   ---
+   Теставы пост
