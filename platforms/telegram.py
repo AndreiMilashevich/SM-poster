@@ -10,7 +10,7 @@ LIMIT = 4096          # message text limit
 CAPTION_LIMIT = 1024  # caption limit when the post has photos or videos
 SUPPORTS_MEDIA = True
 
-PHOTO_EXT = {".jpg", ".jpeg", ".png", ".webp"}
+PHOTO_EXT = {".jpg", ".jpeg", ".png", ".webp", ".jfif"}
 VIDEO_EXT = {".mp4", ".mov", ".m4v"}
 MAX_PHOTO = 10 * 1024 * 1024  # Telegram photo size limit
 MAX_FILE = 50 * 1024 * 1024   # file upload limit via the Bot API
