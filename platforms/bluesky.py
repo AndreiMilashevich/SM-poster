@@ -1,16 +1,18 @@
 import io
 import re
 
+from pathlib import Path
 from atproto import Client, client_utils, models
 from PIL import Image, ImageOps
 
-from config import env
+from config import VIDEO_EXT, env
 
 LIMIT = 300  # Bluesky counts graphemes; len() counts code points, so this check is slightly stricter
 SUPPORTS_MEDIA = True
 MAX_IMAGES = 4         # Bluesky allows up to 4 images per post
 MEDIA_LIMIT = MAX_IMAGES
-IMAGES_ONLY = True     # no video support yet
+VIDEO_ALONE = True     # a post holds either up to 4 images or one video
+MAX_VIDEO_BYTES = 100 * 1024 * 1024  # GitHub rejects bigger files anyway
 MAX_BYTES = 1_000_000  # Bluesky size limit for one image
 
 # Links or hashtags. Links are matched first so a #fragment inside a URL is not treated as a tag.
@@ -66,19 +68,30 @@ def _get_client() -> Client:
         _client.login(env("BLUESKY_HANDLE"), env("BLUESKY_APP_PASSWORD"))
     return _client
 
+def read_video(path: str) -> bytes:
+    """Read a video file after checking its size."""
+    size = Path(path).stat().st_size
+    if size > MAX_VIDEO_BYTES:
+        raise RuntimeError(f"Bluesky: видео {path} слишком большое ({size / 1048576:.0f} МБ)")
+    return Path(path).read_bytes()
 
 def publish_part(text: str, media: list[str], parent, root, meta: dict) -> dict:
     """Publish one post. A reply needs references to both its parent and the thread root."""
     client = _get_client()
     # post language: the lang field in the front matter, Russian by default
-    langs = [meta.get("lang", "ru")]
+    langs = [meta.get("lang", "be")]
     reply_to = None
     if parent:
         reply_to = models.AppBskyFeedPost.ReplyRef(
             parent=models.ComAtprotoRepoStrongRef.Main(uri=parent["uri"], cid=parent["cid"]),
             root=models.ComAtprotoRepoStrongRef.Main(uri=root["uri"], cid=root["cid"]),
         )
-    if media:
+    if media and Path(media[0]).suffix.lower() in VIDEO_EXT:
+        # the planner guarantees that a video is alone in its post
+        response = client.send_video(
+            build_text(text), video=read_video(media[0]), langs=langs, reply_to=reply_to
+        )
+    elif media:
         response = client.send_images(
             build_text(text), images=[shrink(path) for path in media], langs=langs, reply_to=reply_to
         )

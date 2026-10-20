@@ -47,7 +47,8 @@ def publish_thread(publisher, text: str, meta: dict, entry: dict, save) -> None:
     """Publish a post as a root post plus replies, saving progress after every part."""
     media = get_images(meta) if getattr(publisher, "IMAGES_ONLY", False) else get_media(meta)
     limit = publisher.CAPTION_LIMIT if media and hasattr(publisher, "CAPTION_LIMIT") else publisher.LIMIT
-    parts = plan(text, media, limit, publisher.MEDIA_LIMIT)
+    video_alone = getattr(publisher, "VIDEO_ALONE", False)
+    parts = plan(text, media, limit, publisher.MEDIA_LIMIT, video_alone)
     entry["total"] = len(parts)
     refs = entry["refs"]
     for part in parts[len(refs):]:  # parts that are already published are skipped

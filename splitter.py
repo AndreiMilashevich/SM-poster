@@ -1,6 +1,9 @@
 """Split a post into a thread: a root post plus replies."""
 import re
 from dataclasses import dataclass, field
+from pathlib import Path
+
+from config import VIDEO_EXT
 
 
 @dataclass
@@ -40,10 +43,32 @@ def split_text(text: str, limit: int) -> list[str]:
     return chunks
 
 
-def plan(text: str, media: list[str], text_limit: int, media_limit: int) -> list[Part]:
+def batch_media(media: list[str], limit: int, video_alone: bool = False) -> list[list[str]]:
+    """Group media into posts of at most `limit` files, keeping the order."""
+    batches: list[list[str]] = []
+    current: list[str] = []
+    for item in media:
+        if video_alone and Path(item).suffix.lower() in VIDEO_EXT:
+            if current:  # a video never shares a post with other files
+                batches.append(current)
+                current = []
+            batches.append([item])
+            continue
+        current.append(item)
+        if len(current) == limit:
+            batches.append(current)
+            current = []
+    if current:
+        batches.append(current)
+    return batches
+
+
+def plan(
+    text: str, media: list[str], text_limit: int, media_limit: int, video_alone: bool = False
+) -> list[Part]:
     """Spread text chunks and media batches over posts: the first is the root, the rest are replies."""
     chunks = split_text(text, text_limit) if text.strip() else []
-    batches = [media[i : i + media_limit] for i in range(0, len(media), media_limit)]
+    batches = batch_media(media, media_limit, video_alone)
     count = max(len(chunks), len(batches), 1)
     return [
         Part(chunks[i] if i < len(chunks) else "", batches[i] if i < len(batches) else [])
