@@ -5,10 +5,13 @@
     "threads": "18227950147336552"
   },
   "2026-10-19-prandtl-glauert (1).md": {
-    "telegram": "199"
+    "telegram": "199",
+    "threads": "18191258596406912"
   },
   "auxilary_intakes.md": {
-    "telegram": "200"
+    "telegram": "200",
+    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mycegya6ml2w",
+    "threads": "18038356196895242"
   },
   "test2.md": {
     "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mya5deym5z26",
@@ -25,5 +28,8 @@
     "telegram": "204",
     "threads": "18127085299895174"
   },
-  "migs.md": {}
+  "migs.md": {
+    "telegram": "205",
+    "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mycehltknn23"
+  }
 }
