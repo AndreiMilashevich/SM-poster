@@ -1,5 +1,4 @@
 ---
-publish_at: 2026-10-20T15:30:00+02:00
 networks: [bluesky, telegram, threads]
 lang: be
 media: assets/boeing-377
