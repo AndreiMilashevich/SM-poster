@@ -4,6 +4,6 @@ networks: [bluesky, telegram, threads]
 lang: be
 media: images/b25/
 # lang: en
-# draft: true
+draft: true
 ---
 Текст поста. Файлы, имя которых начинается с "_", игнорируются.
