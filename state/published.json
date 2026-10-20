@@ -31,5 +31,20 @@
   "migs.md": {
     "telegram": "205",
     "bluesky": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mycehltknn23"
+  },
+  "boeing-377.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mycyblp5hg26",
+          "cid": "bafyreiatcsdmibgww4c7mxhds2cmjezshihg2qo7vzd2ectpyi33njklom"
+        },
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mycybn4eqs2m",
+          "cid": "bafyreibmvdcghj5x7awy62jlqhbdjxhkxv4vgn37mszn4xicz2hsuvr4ry"
+        }
+      ],
+      "total": 2
+    }
   }
 }
