@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 from urllib.parse import quote
 
-IMAGE_EXT = {".jpg", ".jpeg", ".png", ".webp"}
+IMAGE_EXT = {".jpg", ".jpeg", ".png", ".webp", ".jfif"}
 VIDEO_EXT = {".mp4", ".mov", ".m4v"}
 
 def env(name: str) -> str:
