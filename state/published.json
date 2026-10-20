@@ -57,5 +57,16 @@
       ],
       "total": 1
     }
+  },
+  "test5.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mydki53wgx2l",
+          "cid": "bafyreifodm7mqdyc7bvar7c4hpytpw5i44bmdar7dd5tb75qobk5mizyi4"
+        }
+      ],
+      "total": 1
+    }
   }
 }
