@@ -1,5 +1,5 @@
 ---
-networks: [bluesky, telegram, threads]
+networks: [bluesky]
 lang: be
 media: assets/boeing-377
 # lang: en
