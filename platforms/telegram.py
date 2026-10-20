@@ -4,7 +4,7 @@ from pathlib import Path
 
 import requests
 
-from config import IMAGE_EXT, VIDEO_EXT, env, get_media
+from config import IMAGE_EXT, VIDEO_EXT, env
 
 LIMIT = 4096          # message text limit
 CAPTION_LIMIT = 1024  # caption limit when the post has photos or videos
@@ -15,7 +15,7 @@ SUPPORTS_MEDIA = True
 MAX_PHOTO = 10 * 1024 * 1024  # Telegram photo size limit
 MAX_FILE = 50 * 1024 * 1024   # file upload limit via the Bot API
 MAX_ALBUM = 10                # maximum files in one album
-
+MEDIA_LIMIT = MAX_ALBUM       # how many files fit in one post
 
 def _kind(path: str) -> str:
     """Detect the file type and check its size. Fail with a clear error."""
@@ -43,31 +43,31 @@ def _call(base: str, method: str, **kwargs):
     return data["result"]
 
 
-def publish(text: str, meta: dict) -> str:
+def publish_part(text: str, media: list[str], parent, root, meta: dict) -> int:
+    """Send one message or album. A reply points at the previous message of the thread."""
     base = f"https://api.telegram.org/bot{env('TELEGRAM_BOT_TOKEN')}"
     chat_id = env("TELEGRAM_CHAT_ID")
-    files = get_media(meta)
 
-    if not files:
-        result = _call(base, "sendMessage", json={"chat_id": chat_id, "text": text})
-        return str(result["message_id"])
+    if not media:
+        payload = {"chat_id": chat_id, "text": text}
+        if parent:
+            payload["reply_parameters"] = {"message_id": parent}
+        return _call(base, "sendMessage", json=payload)["message_id"]
 
-    if len(files) > MAX_ALBUM:
-        raise RuntimeError(f"Telegram: в альбоме максимум {MAX_ALBUM} файлов")
-    if len(text) > CAPTION_LIMIT:
-        raise RuntimeError(
-            f"Telegram: подпись слишком длинная ({len(text)}/{CAPTION_LIMIT})"
-        )
-    kinds = [_kind(path) for path in files]
+    kinds = [_kind(path) for path in media]
+    fields = {"chat_id": chat_id}
+    if parent:
+        fields["reply_parameters"] = json.dumps({"message_id": parent})
 
     with ExitStack() as stack:
         handles = {
             f"file{i}": stack.enter_context(open(path, "rb"))
-            for i, path in enumerate(files)
+            for i, path in enumerate(media)
         }
-        if len(files) == 1:
+        if len(media) == 1:
             kind = kinds[0]
-            fields = {"chat_id": chat_id, "caption": text}
+            if text:
+                fields["caption"] = text
             if kind == "video":
                 fields["supports_streaming"] = "true"
             result = _call(
@@ -78,20 +78,20 @@ def publish(text: str, meta: dict) -> str:
             )
         else:
             # Album: the caption goes on the first item, files are attached via attach://
-            media = []
+            items = []
             for i, kind in enumerate(kinds):
                 item = {"type": kind, "media": f"attach://file{i}"}
-                if i == 0:
+                if i == 0 and text:
                     item["caption"] = text
                 if kind == "video":
                     item["supports_streaming"] = True
-                media.append(item)
+                items.append(item)
             result = _call(
                 base,
                 "sendMediaGroup",
-                data={"chat_id": chat_id, "media": json.dumps(media)},
+                data={**fields, "media": json.dumps(items)},
                 files=handles,
             )
 
     message = result[0] if isinstance(result, list) else result
-    return str(message["message_id"])
+    return message["message_id"]

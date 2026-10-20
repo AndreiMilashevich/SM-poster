@@ -1,14 +1,16 @@
 import io
 import re
 
-from atproto import Client, client_utils
+from atproto import Client, client_utils, models
 from PIL import Image, ImageOps
 
-from config import env, get_images
+from config import env
 
 LIMIT = 300  # Bluesky counts graphemes; len() counts code points, so this check is slightly stricter
 SUPPORTS_MEDIA = True
 MAX_IMAGES = 4         # Bluesky allows up to 4 images per post
+MEDIA_LIMIT = MAX_IMAGES
+IMAGES_ONLY = True     # no video support yet
 MAX_BYTES = 1_000_000  # Bluesky size limit for one image
 
 # Links or hashtags. Links are matched first so a #fragment inside a URL is not treated as a tag.
@@ -53,20 +55,33 @@ def shrink(path: str) -> bytes:
         else:  # quality alone is not enough, make the picture smaller
             image = image.resize((int(image.width * 0.85), int(image.height * 0.85)))
 
-def publish(text: str, meta: dict) -> str:
-    images = get_images(meta)
-    if len(images) > MAX_IMAGES:
-        print(f"Bluesky принимает до {MAX_IMAGES} фото, использую первые {MAX_IMAGES}")
-        images = images[:MAX_IMAGES]
+_client = None
 
-    client = Client()
-    client.login(env("BLUESKY_HANDLE"), env("BLUESKY_APP_PASSWORD"))
+
+def _get_client() -> Client:
+    """Log in once and reuse the session for all parts of a thread."""
+    global _client
+    if _client is None:
+        _client = Client()
+        _client.login(env("BLUESKY_HANDLE"), env("BLUESKY_APP_PASSWORD"))
+    return _client
+
+
+def publish_part(text: str, media: list[str], parent, root, meta: dict) -> dict:
+    """Publish one post. A reply needs references to both its parent and the thread root."""
+    client = _get_client()
     # post language: the lang field in the front matter, Russian by default
     langs = [meta.get("lang", "ru")]
-    if images:
+    reply_to = None
+    if parent:
+        reply_to = models.AppBskyFeedPost.ReplyRef(
+            parent=models.ComAtprotoRepoStrongRef.Main(uri=parent["uri"], cid=parent["cid"]),
+            root=models.ComAtprotoRepoStrongRef.Main(uri=root["uri"], cid=root["cid"]),
+        )
+    if media:
         response = client.send_images(
-            build_text(text), images=[shrink(path) for path in images], langs=langs
+            build_text(text), images=[shrink(path) for path in media], langs=langs, reply_to=reply_to
         )
     else:
-        response = client.send_post(build_text(text), langs=langs)
-    return response.uri
+        response = client.send_post(build_text(text), langs=langs, reply_to=reply_to)
+    return {"uri": response.uri, "cid": response.cid}

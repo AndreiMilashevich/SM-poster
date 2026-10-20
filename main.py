@@ -9,8 +9,9 @@ from pathlib import Path
 
 import frontmatter
 
-from config import get_media
+from config import get_images, get_media
 from platforms import PUBLISHERS
+from splitter import plan
 
 POSTS_DIR = Path("posts")
 STATE_FILE = Path("state/published.json")
@@ -42,6 +43,18 @@ def parse_time(value) -> datetime:
         value = value.replace(tzinfo=timezone.utc)
     return value
 
+def publish_thread(publisher, text: str, meta: dict, entry: dict, save) -> None:
+    """Publish a post as a root post plus replies, saving progress after every part."""
+    media = get_images(meta) if getattr(publisher, "IMAGES_ONLY", False) else get_media(meta)
+    limit = publisher.CAPTION_LIMIT if media and hasattr(publisher, "CAPTION_LIMIT") else publisher.LIMIT
+    parts = plan(text, media, limit, publisher.MEDIA_LIMIT)
+    entry["total"] = len(parts)
+    refs = entry["refs"]
+    for part in parts[len(refs):]:  # parts that are already published are skipped
+        parent = refs[-1] if refs else None
+        root = refs[0] if refs else None
+        refs.append(publisher.publish_part(part.text, part.media, parent, root, meta))
+        save()
 
 def main() -> int:
     state = load_state()
@@ -63,32 +76,26 @@ def main() -> int:
 
         done = state.setdefault(path.name, {})
         for network in post.get("networks", DEFAULT_NETWORKS):
-            if network in done:
-                continue  # already published, never post twice
+            entry = done.get(network)
+            if isinstance(entry, str):
+                continue  # old-style record: fully published
+            if entry and entry["total"] and len(entry["refs"]) >= entry["total"]:
+                continue  # all parts are already published, never post twice
 
             publisher = PUBLISHERS.get(network)
             if publisher is None:
                 print(f"{path.name}: неизвестная сеть «{network}»", file=sys.stderr)
                 failed = True
                 continue
-            if len(text) > publisher.LIMIT:
-                print(
-                    f"{path.name}: слишком длинный пост для {network} "
-                    f"({len(text)}/{publisher.LIMIT})",
-                    file=sys.stderr,
-                )
-                failed = True
-                continue
 
+            entry = done.setdefault(network, {"refs": [], "total": 0})
             try:
-                if get_media(post.metadata) and not getattr(publisher, "SUPPORTS_MEDIA", False):
-                    print(f"{path.name}: {network} пока не поддерживает фото и видео, публикую без них")
-                done[network] = publisher.publish(text, post.metadata)
-                print(f"{path.name}: опубликовано в {network}")
+                publish_thread(publisher, text, post.metadata, entry, lambda: save_state(state))
+                print(f"{path.name}: опубликовано в {network} (постов: {len(entry['refs'])})")
             except Exception as error:
                 print(f"{path.name}: ошибка в {network}: {error}", file=sys.stderr)
                 failed = True
-            save_state(state)  # save progress after each network
+            save_state(state)  # keep progress even if a later part failed
 
     save_state(state)
     return 1 if failed else 0

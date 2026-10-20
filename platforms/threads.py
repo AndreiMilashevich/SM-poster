@@ -3,11 +3,13 @@ from pathlib import Path
 
 import requests
 
-from config import env, get_images, public_url
+from config import env, public_url
 
 LIMIT = 500
 SUPPORTS_MEDIA = True
 MAX_CAROUSEL = 20  # a carousel holds 2 to 20 items
+MEDIA_LIMIT = MAX_CAROUSEL
+IMAGES_ONLY = True             # no video support yet
 MAX_IMAGE_BYTES = 8 * 1024 * 1024
 API = "https://graph.threads.net/v1.0"
 
@@ -53,62 +55,44 @@ def _wait_until_ready(container_id: str, token: str) -> None:
     raise RuntimeError("Threads: контейнер не стал готов за 60 секунд")
 
 
-def publish(text: str, meta: dict) -> str:
+def publish_part(text: str, media: list[str], parent, root, meta: dict) -> str:
+    """Publish one post. A reply points at the previous post of the thread via reply_to_id."""
     user_id = "me"
     token = env("THREADS_ACCESS_TOKEN")
 
-    images = get_images(meta)
-    if len(images) > MAX_CAROUSEL:
-        print(f"Threads принимает до {MAX_CAROUSEL} фото, использую первые {MAX_CAROUSEL}")
-        images = images[:MAX_CAROUSEL]
-    for path in images:
+    for path in media:
         _check_image(path)
 
+    def params(**fields) -> dict:
+        result = {**fields, "access_token": token}
+        if text and "is_carousel_item" not in fields:
+            result["text"] = text
+        if parent and "is_carousel_item" not in fields:
+            result["reply_to_id"] = parent
+        return result
+
     endpoint = f"{API}/{user_id}/threads"
-    if not images:
-        container = _post(
-            endpoint, {"media_type": "TEXT", "text": text, "access_token": token}
-        )
-    elif len(images) == 1:
-        container = _post(
-            endpoint,
-            {
-                "media_type": "IMAGE",
-                "image_url": public_url(images[0]),
-                "text": text,
-                "access_token": token,
-            },
-        )
+    if not media:
+        container = _post(endpoint, params(media_type="TEXT"))
+    elif len(media) == 1:
+        container = _post(endpoint, params(media_type="IMAGE", image_url=public_url(media[0])))
     else:
         # Carousel: one container per image, then one container that holds them all
         children = []
-        for path in images:
+        for path in media:
             item = _post(
                 endpoint,
-                {
-                    "media_type": "IMAGE",
-                    "image_url": public_url(path),
-                    "is_carousel_item": "true",
-                    "access_token": token,
-                },
+                params(media_type="IMAGE", image_url=public_url(path), is_carousel_item="true"),
             )
             children.append(item["id"])
         for child in children:
             _wait_until_ready(child, token)
-        container = _post(
-            endpoint,
-            {
-                "media_type": "CAROUSEL",
-                "children": ",".join(children),
-                "text": text,
-                "access_token": token,
-            },
-        )
+        container = _post(endpoint, params(media_type="CAROUSEL", children=",".join(children)))
 
-    if images:
+    if media:
         _wait_until_ready(container["id"], token)
     else:
-        time.sleep(10)
+        time.sleep(10)  # give Threads a moment to register a text container
     published = _post(
         f"{API}/{user_id}/threads_publish",
         {"creation_id": container["id"], "access_token": token},
