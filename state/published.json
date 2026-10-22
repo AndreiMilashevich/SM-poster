@@ -99,5 +99,28 @@
       ],
       "total": 1
     }
+  },
+  "f-14a_card.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myhhmgmpne2x",
+          "cid": "bafyreiao4lkk5zg354ghqw6zpwh7kvamx5ccwacy754cuyqbf2eooqssua"
+        }
+      ],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [
+        216
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "18096105863355020"
+      ],
+      "total": 1
+    }
   }
 }
