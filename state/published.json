@@ -122,5 +122,28 @@
       ],
       "total": 1
     }
+  },
+  "skytruck.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myk36f2rvk2w",
+          "cid": "bafyreibxbrpvcv3hzhzdxebf5aus7xi4lpqz2ydjhncad5bpj54jadpfbm"
+        }
+      ],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [
+        217
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "17911633707507676"
+      ],
+      "total": 1
+    }
   }
 }
