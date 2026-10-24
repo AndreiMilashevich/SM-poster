@@ -145,5 +145,28 @@
       ],
       "total": 1
     }
+  },
+  "il-28.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mymlqpn3ct24",
+          "cid": "bafyreie76aijvth7boyljv3u5av7kkvqr6ubhx6msnkwymeqxc3dhofp6q"
+        }
+      ],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [
+        221
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "18040100948843339"
+      ],
+      "total": 1
+    }
   }
 }
