@@ -168,5 +168,28 @@
       ],
       "total": 1
     }
+  },
+  "mielec.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myowb6miim2s",
+          "cid": "bafyreig7nqafnuqdcrtoc6ovajwvpgvbldxuzqnaw5ho6hgcsfsiq3reqy"
+        }
+      ],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [
+        223
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "17926114785202867"
+      ],
+      "total": 1
+    }
   }
 }
