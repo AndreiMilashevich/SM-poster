@@ -237,5 +237,60 @@
       ],
       "total": 1
     }
+  },
+  "A380wing.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mywa733oly2n",
+          "cid": "bafyreicqqoy5tceas2jazwur46y2s3dvwbtqo64sciaai35s4ohtlxobgm"
+        }
+      ],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [
+        226
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "17940730119394093"
+      ],
+      "total": 1
+    }
+  },
+  "greets.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mywa7hkkco2g",
+          "cid": "bafyreibfddwhdy4kkylmb3zkcfdk35b3ip6t5xxi3vmxwbf57mo2vecsju"
+        },
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mywa7ibngr2p",
+          "cid": "bafyreifxwcrvizrkv2tzi2l5agak7xu2ooqmuswwvf3nacmnffwmbr44ha"
+        },
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mywa7iejbv2b",
+          "cid": "bafyreiaqnvoyurm5ax2up5dnt6yhat2xnz66ccv647m3csf4kfchk34knq"
+        }
+      ],
+      "total": 3
+    },
+    "telegram": {
+      "refs": [
+        227
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "18109933889337303",
+        "18003371684804417"
+      ],
+      "total": 2
+    }
   }
 }
