@@ -292,5 +292,28 @@
       ],
       "total": 2
     }
+  },
+  "joke.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3myyye5lomx2x",
+          "cid": "bafyreifabbhpklgyluxrozo7i353vk34xhw5hg37qhyswxazkye5txfodq"
+        }
+      ],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [
+        230
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "17872816425644981"
+      ],
+      "total": 1
+    }
   }
 }
