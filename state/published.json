@@ -315,5 +315,28 @@
       ],
       "total": 1
     }
+  },
+  "jacket.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mz3xw7rn5w2n",
+          "cid": "bafyreiaki7cvuz2j76cdlsr4vyntomkk6bq5loiwa76npzfncpf2g4oyqq"
+        }
+      ],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [
+        232
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "17997024911868204"
+      ],
+      "total": 1
+    }
   }
 }
