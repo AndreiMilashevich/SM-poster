@@ -2,7 +2,7 @@
 networks: [bluesky, telegram, threads]
 lang: be
 media: 
-- assets/images/chasy-naruchnye-komandirskie-s-simvolikoj-samolet.jpg,
+- assets/images/chasy-naruchnye-komandirskie-s-simvolikoj-samolet.jpg
 - assets/images/Handley_Page_HP-80_Victor_K2_AN1103895.jpeg
 # lang: en
 # draft: true
