@@ -341,15 +341,24 @@
   },
   "watch.md": {
     "bluesky": {
-      "refs": [],
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mz624qcxsz2n",
+          "cid": "bafyreiexzqfw7vzi4us6ozphzpcwmaqddifd5zmmgpezqynpgfrgjmryga"
+        }
+      ],
       "total": 1
     },
     "telegram": {
-      "refs": [],
+      "refs": [
+        235
+      ],
       "total": 1
     },
     "threads": {
-      "refs": [],
+      "refs": [
+        "18114403685149136"
+      ],
       "total": 1
     }
   }
