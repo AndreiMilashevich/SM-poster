@@ -361,5 +361,28 @@
       ],
       "total": 1
     }
+  },
+  "x-59.md": {
+    "bluesky": {
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mzas4uxa2b2p",
+          "cid": "bafyreihhmyolfccyms47zc5grfuyvrxjqygvyhbuukfiap3utjpyaauy2a"
+        }
+      ],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [
+        237
+      ],
+      "total": 1
+    },
+    "threads": {
+      "refs": [
+        "17914839297559696"
+      ],
+      "total": 1
+    }
   }
 }
