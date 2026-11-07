@@ -387,15 +387,24 @@
   },
   "u-2prop.md": {
     "bluesky": {
-      "refs": [],
+      "refs": [
+        {
+          "uri": "at://did:plc:63c67apzpa77hbguef4zt5on/app.bsky.feed.post/3mzpp62qrbf2n",
+          "cid": "bafyreiam3kgeabjd7hik6dhzauekjwnbxkyjpazlvb4rbbqy3jxg5cf7x4"
+        }
+      ],
       "total": 1
     },
     "telegram": {
-      "refs": [],
+      "refs": [
+        249
+      ],
       "total": 1
     },
     "threads": {
-      "refs": [],
+      "refs": [
+        "18025008203946162"
+      ],
       "total": 1
     }
   }
