@@ -384,5 +384,19 @@
       ],
       "total": 1
     }
+  },
+  "u-2prop.md": {
+    "bluesky": {
+      "refs": [],
+      "total": 1
+    },
+    "telegram": {
+      "refs": [],
+      "total": 1
+    },
+    "threads": {
+      "refs": [],
+      "total": 1
+    }
   }
 }
