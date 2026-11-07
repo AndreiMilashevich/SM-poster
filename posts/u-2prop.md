@@ -2,7 +2,7 @@
 networks: [bluesky, telegram, threads]
 lang: be
 media:
-- assets/images/g41iee9chn261.jpg,
+- assets/images/g41iee9chn261.jpg
 - assets/images/U2withExperiments.jpg
 # lang: en
 # draft: true
